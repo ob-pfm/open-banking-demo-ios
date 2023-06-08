@@ -1,4 +1,4 @@
-# PFM SDK Backend Android
+# PFM SDK Backend iOS
 
 The Open Banking PFM SDK uses Client classes and with **Promises** to get responses from the Open Banking PFM API in an easier way and structured as data models.
 
