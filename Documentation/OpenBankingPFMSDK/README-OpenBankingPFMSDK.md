@@ -29,7 +29,7 @@ How to use
 Given a valid user ID, fetches the information of an user.
 
 ```swift
-let usersService = OpenBankingPFMAPI.usersClient()
+var usersService = OpenBankingPFMAPI.usersClient()
 let userId = 123456
 
 // Remote call
@@ -392,7 +392,7 @@ Possible Errors:
 Given a valid account ID, fetches the information of an account.
 
 ```swift
-let accountsService = OpenBankingPFMAPI.accountsClient()
+var accountsService = OpenBankingPFMAPI.accountsClient()
 let accountId = 320023867
 
 // Remote call
@@ -439,7 +439,7 @@ Creates an account. A previously created user and a financial entity is required
 The possible values for nature property are "__Debit__" , "__Credit card__" , "__Credit__" , "__Investment__" , "__Mortgage__"
 
 ```swift
-let accountsService = OpenBankingPFMAPI.accountsClient()
+var accountsService = OpenBankingPFMAPI.accountsClient()
 
 let newAccountData = OBAccount(financialEntityId: 743443,
           nature: "Debit",
@@ -491,7 +491,7 @@ Possible Errors:
 Updates an account. You can pass an object with the properties to update ( `nature`: _string_, `name`: _string_, `number`: _string_, `balance`: _number_, `chargeable`: _boolean_ ).
 
 ```swift
-let accountsService = OpenBankingPFMAPI.accountsClient()
+var accountsService = OpenBankingPFMAPI.accountsClient()
 
 // Using some existing account to update
 account.name = "Gold"
@@ -537,7 +537,7 @@ Possible Errors:
 Deletes an account and all its information, including transactions.
 
 ```swift
-let accountsService = OpenBankingPFMAPI.accountsClient()
+var accountsService = OpenBankingPFMAPI.accountsClient()
 let accountId = 320023867
 
 // Remote call
@@ -569,7 +569,7 @@ How to use
 Fetches a list of transactions per account. You can pass a filter options object as parameter if is not passed all transactions are listed.
 
 ```swift
-let transactionsService = OpenBankingPFMAPI.transactionsClient()
+var transactionsService = OpenBankingPFMAPI.transactionsClient()
 let accountId = 123456
 
 // Remote call
@@ -612,7 +612,7 @@ Possible Errors:
 Given a valid transaction ID, fetches the information of a transaction.
 
 ```swift
-let transactionsService = OpenBankingPFMAPI.transactionsClient()
+var transactionsService = OpenBankingPFMAPI.transactionsClient()
 let transactionId = 123456
 
 // Remote call
@@ -655,7 +655,7 @@ Possible Errors:
 Creates a transaction. A previously created account is required. You have to import the Transaction Payload Model to create a new one.
 
 ```swift
-let transactionsService = OpenBankingPFMAPI.transactionsClient()
+var transactionsService = OpenBankingPFMAPI.transactionsClient()
 
 let newTransaction = OBTransaction(accountId: 487870282, //The ID of the account that holds the transaction. It´s required.,
                                    date: 1678255200000, //The date of the transaction. It´s required.,
@@ -702,7 +702,7 @@ Possible Errors:
 Given a valid transaction id updates a transaction. You can pass an object with the properties to update ( `amount`: _number_, `charge`: _boolean_, `date`: _number_, `description`: _string_, `categoryId`: _number_ ).
 
 ```swift
-let transactionsService = OpenBankingPFMAPI.transactionsClient()
+var transactionsService = OpenBankingPFMAPI.transactionsClient()
 // Using some existing transaction
 transaction.transactionDescription = "Edited Transaction Test"
 
@@ -715,7 +715,6 @@ transactionService.edit(transaction) { (result: Result<OBTransaction>) in
         print("Error: \(error.localizedDescription)")
     }
 }
-
 ```
 
 Output:
@@ -746,7 +745,7 @@ Possible Errors:
 Deletes a transaction and all its information.
 
 ```swift
-let transactionsService = OpenBankingPFMAPI.transactionsClient()
+var transactionsService = OpenBankingPFMAPI.transactionsClient()
 let transactionId = 123456
 
 // Remote call
@@ -777,45 +776,40 @@ How to use
 
 Fetches a list of budgets per user, sorted by ID in descending order.
 
-```
-budgetsClient
-    .getList(userId, cursor)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
+```swift
+var budgetsService = OpenBankingPFMAPI.budgetsClient()
+let userId = 123456
+
+// Remote call
+budgetsService.userId(userId).getList { (result:Result<OBBodyResponse<[OBBudget]>>) in
+    switch result {
+    case .success(let result):
+// Set the parsed budgets into your datasource
+        self?.dataSource = result.data
+    case .failure(let error):
+        print("Error: \(error.localizedDescription)")
+    }
+}
 ```
 
 The cursor param is optional. If a cursor is specified, the list starts with the item that has that ID.
 
 Output:
 
-```
-[
-    Budget {
-        id: 982908114,
-        categoryId: 11,
-        name: "Sports",
-        amount: 1111.00,
-        warningPercentage: 0.70,
-        spent: 0.00,
-        leftToSpend: 1111.00,
-        status: "ok",
-        dateCreated: 1677714920234,
-        lastUpdated: 1677714920234
-    },
-    Budget {
-        id: 982908115,
-        categoryId: 11,
-        name: "Travelling",
-        amount: 1111.00,
-        warningPercentage: 0.70,
-        spent: 0.00,
-        leftToSpend: 1111.00,
-        status: "ok",
-        dateCreated: 1677714920234,
-        lastUpdated: 1677714920234
-    }
-    ...
-]
+```swift
+class OBBudget: Codable {
+    public var id: Int?
+    public var userId: Int?
+    public var categoryId: Int?
+    public var name: String
+    public var amount: Double
+    public var warningPercentage: Float?
+    public var spent: Double?
+    public var leftToSpend: Double?
+    public var status: String?
+    public var dateCreated: Int?
+    public var lastUpdated: Int?
+}
 ```
 
 Possible Errors:
