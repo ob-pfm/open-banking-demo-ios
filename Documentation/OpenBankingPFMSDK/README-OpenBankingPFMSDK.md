@@ -308,7 +308,7 @@ var categoryService = OpenBankingPFMAPI.categoriesClient()
 let categoryId = 123456
 
 // Remote call
-categoriesService.delete(withID: id) { (result: Result<Bool>) in
+categoriesService.delete(withID: categoryId) { (result: Result<Bool>) in
     switch result {
     case .success(let result):
         print(result)
@@ -396,7 +396,7 @@ let accountsService = OpenBankingPFMAPI.accountsClient()
 let accountId = 320023867
 
 // Remote call
-accountsService.get(withID: id) { (result: Result<OBAccount>) in
+accountsService.get(withID: accountId) { (result: Result<OBAccount>) in
     switch result {
     case .success(let result):
 // Set the parsed account into your datasource
@@ -450,7 +450,7 @@ let newAccountData = OBAccount(financialEntityId: 743443,
           userId: 1115164)
 
 // Remote call
-accountsService.create(account) { (result: Result<OBAccount>) in
+accountsService.create(newAccountData) { (result: Result<OBAccount>) in
     switch result {
     case .success(let result):
 // Set the parsed account into your datasource
@@ -536,11 +536,19 @@ Possible Errors:
 
 Deletes an account and all its information, including transactions.
 
-```
-accountsClient
-    .delete(accountId)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
+```swift
+let accountsService = OpenBankingPFMAPI.accountsClient()
+let accountId = 320023867
+
+// Remote call
+accountsService.delete(withID: accountId) { (result:Result<Bool>) in
+    switch result {
+    case .success(let result):
+        print(result)
+    case .failure(let error):
+        print("Error: \(error.localizedDescription)")
+    }
+}
 ```
 
 Possible Errors:
