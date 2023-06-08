@@ -177,7 +177,7 @@ var categoriesService = OpenBankingPFMAPI.categoriesClient()
 let categoryId = 2
 
 // Remote call
-categoriesService.get(withID: id) { [weak self] (result: Result<OBCategory>)in
+categoriesService.get(withID: categoryId) { [weak self] (result: Result<OBCategory>)in
     switch result {
     case .success(let result):
 // Set the parsed category into your datasource
@@ -568,55 +568,37 @@ How to use
 
 Fetches a list of transactions per account. You can pass a filter options object as parameter if is not passed all transactions are listed.
 
-```
-const filterOptions = {
-    categoryId: 12, //optional
-    description: 'netflix', //optional
-    charge: true, //optional
-    minAmount: 0, //optional
-    maxAmount: 1000, //optional
-    dateFrom: 1587567125458, //optional
-    dateTo: 1587567125458, //optional
-    page: 0, //optional
-    size: 100, //optional
-    field: 'executionDate', //optional
-    order: 'desc' //optional
-}; // optional
+```swift
+let transactionsService = OpenBankingPFMAPI.transactionsClient()
+let accountId = 123456
 
-transactionsClient
-    .getList(accountId, filterOptions)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
+// Remote call
+transactionsService.accountId(accountId).getList { (result:Result<OBBodyResponse<[OBTransaction]>>) in
+    switch result {
+    case .success(let result):
+// Set the parsed transactions into your datasource
+        self?.dataSource = result.data
+    case .failure(let error):
+        print("Error: \(error.localizedDescription)")
+    }
+}
 ```
 
 Output:
 
-```
-[
-    Transaction {
-        id: 123,
-        date: 1587567125458,
-        charge: true,
-        description: "UBER EATS",
-        amount: 1234.56,
-        categoryId: 123,
-        dateCreated: 1587567125458,
-        lastUpdated: 1587567125458,
-        isBankAggregation: true
-    },
-    Transaction {
-        id: 456,
-        date: 1587567145458,
-        charge: true,
-        description: "RAPPI",
-        amount: 1234.56,
-        categoryId: 123,
-        dateCreated: 1646259197099,
-        lastUpdated: 1646259197099,
-        isBankAggregation: true
-    }
-    ...
-]
+```swift
+struct OBTransaction: Codable {
+    public var id: Int?
+    public var accountId: Int?
+    public var date: Int
+    public var charge: Bool
+    public var transactionDescription: String
+    public var amount: Double
+    public var categoryId: Int?
+    public var dateCreated: Int?
+    public var lastUpdated: Int?
+    public var isBankAggregation: Bool?
+}
 ```
 
 Possible Errors:
@@ -629,26 +611,36 @@ Possible Errors:
 
 Given a valid transaction ID, fetches the information of a transaction.
 
-```
-transactionsClient
-    .get(transactionId)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
+```swift
+let transactionsService = OpenBankingPFMAPI.transactionsClient()
+let transactionId = 123456
+
+// Remote call
+transactionsService.get(withID: transactionId) { (result: Result<OBTransaction>) in
+    switch result {
+    case .success(let result):
+// Set the parsed transaction into your datasource
+        self?.dataSource = [result]
+    case .failure(let error):
+        print("Error: \(error.localizedDescription)")
+    }
+}
 ```
 
 Output:
 
-```
-Transaction {
-    id: 123,
-    date: 1587567125458,
-    charge: true,
-    description: "UBER EATS",
-    amount: 1234.56,
-    categoryId: 123,
-    dateCreated: 1587567125458,
-    lastUpdated: 1587567125458,
-    isBankAggregation: true
+```swift
+struct OBTransaction: Codable {
+    public var id: Int?
+    public var accountId: Int?
+    public var date: Int
+    public var charge: Bool
+    public var transactionDescription: String
+    public var amount: Double
+    public var categoryId: Int?
+    public var dateCreated: Int?
+    public var lastUpdated: Int?
+    public var isBankAggregation: Bool?
 }
 ```
 
@@ -660,40 +652,42 @@ Possible Errors:
 
 ### Create Transaction
 
-Creates a transaction. A previosuly created account is required. You have to import the Transaction Payload Model to create a new one.
+Creates a transaction. A previously created account is required. You have to import the Transaction Payload Model to create a new one.
 
-```
-import { TransactionPayload } from "open-banking-pfm-sdk";
-...
-const newTransactionData = new TransactionPayload(
-    {
-    accountId: 487870282, //The ID of the account that holds the transaction. It´s required.
-    amount: 1111, //The amount of the transaction. It´s required.
-    charge: true, //A flag that indicates if the transaction is a charge or a deposit. It´s required.
-    date: 1678255200000, //The date of the transaction. It´s required.
-    description: 'Transaction Test', //The description of the transaction. It´s required.
-    categoryId: 16 //The category ID of the transaction
+```swift
+let transactionsService = OpenBankingPFMAPI.transactionsClient()
+
+let newTransaction = OBTransaction(accountId: 487870282, //The ID of the account that holds the transaction. It´s required.,
+                                   date: 1678255200000, //The date of the transaction. It´s required.,
+                                   charge: true, //A flag that indicates if the transaction is a charge or a deposit. It´s required.,
+                                   description: "Transaction Test", //The description of the transaction. It´s required.,
+                                   amount: 1111) //The amount of the transaction. It´s required.
+
+// Remote call
+transactionsService.create(newTransaction) { (result: Result<OBTransaction>) in
+    switch result {
+    case .success(let result):
+        print(result)
+    case .failure(let error):
+        print("Error: \(error.localizedDescription)")
     }
-);
-
-transactionsClient.create(newTransactionData)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
+}
 ```
 
 Output:
 
-```
-Transaction {
-    id: 789,
-    date: 1587567145458,
-    charge: true,
-    description: "Transaction Test",
-    amount: 1111,
-    categoryId: 16,
-    dateCreated: 1587567145458,
-    lastUpdated: 1587567145458,
-    isBankAggregation: false
+```swift
+struct OBTransaction: Codable {
+    public var id: Int?
+    public var accountId: Int?
+    public var date: Int
+    public var charge: Bool
+    public var transactionDescription: String
+    public var amount: Double
+    public var categoryId: Int?
+    public var dateCreated: Int?
+    public var lastUpdated: Int?
+    public var isBankAggregation: Bool?
 }
 ```
 
@@ -707,27 +701,37 @@ Possible Errors:
 
 Given a valid transaction id updates a transaction. You can pass an object with the properties to update ( `amount`: _number_, `charge`: _boolean_, `date`: _number_, `description`: _string_, `categoryId`: _number_ ).
 
-```
-const modifiedTransactionData = { description: 'Edited Transaction Test' };
-transactionsClient
-    .edit(transactionId, modifiedTransactionData)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
+```swift
+let transactionsService = OpenBankingPFMAPI.transactionsClient()
+// Using some existing transaction
+transaction.transactionDescription = "Edited Transaction Test"
+
+// Remote call
+transactionService.edit(transaction) { (result: Result<OBTransaction>) in
+    switch result {
+    case .success(let result):
+        print(result)
+    case .failure(let error):
+        print("Error: \(error.localizedDescription)")
+    }
+}
+
 ```
 
 Output:
 
-```
-Transaction {
-    id: 789,
-    date: 1587567145458,
-    charge: true,
-    description: "Edited Transaction Test",
-    amount: 1111,
-    categoryId: 16,
-    dateCreated: 1587567145458,
-    lastUpdated: 1587567145458,
-    isBankAggregation: false
+```swift
+struct OBTransaction: Codable {
+    public var id: Int?
+    public var accountId: Int?
+    public var date: Int
+    public var charge: Bool
+    public var transactionDescription: String
+    public var amount: Double
+    public var categoryId: Int?
+    public var dateCreated: Int?
+    public var lastUpdated: Int?
+    public var isBankAggregation: Bool?
 }
 ```
 
@@ -741,28 +745,19 @@ Possible Errors:
 
 Deletes a transaction and all its information.
 
-```
-transactionsClient
-    .delete(transactionId)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
-```
+```swift
+let transactionsService = OpenBankingPFMAPI.transactionsClient()
+let transactionId = 123456
 
-Possible Errors:
-
-* [Error 400](#error-400)
-* [Error 404](#error-404)
-* [Error 500](#error-500)
-
-### Delete all transactions from an account
-
-Deletes all transactions of the account by its identifier.
-
-```
-transactionsClient
-    .deleteAll(accountId)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
+// Remote call
+transactionsService.delete(withID: transactionId) { (result:Result<Bool>) in
+    switch result {
+    case .success(let result):
+        print(result)
+    case .failure(let error):
+        print("Error: \(error.localizedDescription)")
+    }
+}
 ```
 
 Possible Errors:
