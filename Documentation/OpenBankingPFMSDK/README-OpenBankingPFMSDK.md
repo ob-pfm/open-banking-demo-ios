@@ -30,6 +30,9 @@ Given a valid user ID, fetches the information of an user.
 
 ```swift
 var usersService = OpenBankingPFMAPI.usersClient()
+// In order to prevent bad requests
+usersService.clearQueryItems()
+
 let userId = 123456
 
 // Remote call
@@ -73,6 +76,9 @@ Returns the list of available banks to be able to add and manage movements, mone
 
 ```swift
 var banksService = OpenBankingPFMAPI.banksClient()
+// In order to prevent bad requests
+banksService.clearQueryItems()
+
 let userId = 123456
 
 // Set the userId
@@ -125,6 +131,9 @@ Fetches a list of categories, sorted by ID in descending order
 
 ```swift
 var categoriesService = OpenBankingPFMAPI.categoriesClient()
+// In order to prevent bad requests
+categoryService.clearQueryItems()
+
 let userId = 123456
 let cursor = nil
 
@@ -174,6 +183,9 @@ Given a valid category ID, fetches the information of a category.
 
 ```swift
 var categoriesService = OpenBankingPFMAPI.categoriesClient()
+// In order to prevent bad requests
+categoryService.clearQueryItems()
+
 let categoryId = 2
 
 // Remote call
@@ -215,6 +227,8 @@ Creates a category. If a user ID is not specified, the category is considered as
 
 ```swift
 var categoryService = OpenBankingPFMAPI.categoriesClient()
+// In order to prevent bad requests
+categoryService.clearQueryItems()
 
 let newCategory = OBCategory(userId: 123456, //The ID of the user that owns the category
            name: "Category name", //The name of the category. It's required.
@@ -260,6 +274,8 @@ Given a valid category id updates a category. You can pass an object with the pr
 
 ```swift
 var categoryService = OpenBankingPFMAPI.categoriesClient()
+// In order to prevent bad requests
+categoryService.clearQueryItems()
 
 let editedCategory = OBCategory(userId: 123456,
            name: "Ball Sports", 
@@ -305,6 +321,9 @@ Given a valid category id deletes a category.
 
 ```swift
 var categoryService = OpenBankingPFMAPI.categoriesClient()
+// In order to prevent bad requests
+categoryService.clearQueryItems()
+
 let categoryId = 123456
 
 // Remote call
@@ -339,6 +358,9 @@ Fetches a list of accounts per user, sorted by ID in descending order.
 
 ```swift
 var accountsService = OpenBankingPFMAPI.accountsClient()
+// In order to prevent bad requests
+accountsService.clearQueryItems()
+
 let userId = 123456 // Required
 let isBankAggregation = true
 let cursor = 0
@@ -393,6 +415,9 @@ Given a valid account ID, fetches the information of an account.
 
 ```swift
 var accountsService = OpenBankingPFMAPI.accountsClient()
+// In order to prevent bad requests
+accountsService.clearQueryItems()
+
 let accountId = 320023867
 
 // Remote call
@@ -440,6 +465,8 @@ The possible values for nature property are "__Debit__" , "__Credit card__" , "_
 
 ```swift
 var accountsService = OpenBankingPFMAPI.accountsClient()
+// In order to prevent bad requests
+accountsService.clearQueryItems()
 
 let newAccountData = OBAccount(financialEntityId: 743443,
           nature: "Debit",
@@ -492,6 +519,8 @@ Updates an account. You can pass an object with the properties to update ( `natu
 
 ```swift
 var accountsService = OpenBankingPFMAPI.accountsClient()
+// In order to prevent bad requests
+accountsService.clearQueryItems()
 
 // Using some existing account to update
 account.name = "Gold"
@@ -538,6 +567,9 @@ Deletes an account and all its information, including transactions.
 
 ```swift
 var accountsService = OpenBankingPFMAPI.accountsClient()
+// In order to prevent bad requests
+accountsService.clearQueryItems()
+
 let accountId = 320023867
 
 // Remote call
@@ -570,6 +602,9 @@ Fetches a list of transactions per account. You can pass a filter options object
 
 ```swift
 var transactionsService = OpenBankingPFMAPI.transactionsClient()
+// In order to prevent bad requests
+transactionsService.clearQueryItems()
+
 let accountId = 123456
 
 // Remote call
@@ -613,6 +648,9 @@ Given a valid transaction ID, fetches the information of a transaction.
 
 ```swift
 var transactionsService = OpenBankingPFMAPI.transactionsClient()
+// In order to prevent bad requests
+transactionsService.clearQueryItems()
+
 let transactionId = 123456
 
 // Remote call
@@ -656,6 +694,8 @@ Creates a transaction. A previously created account is required. You have to imp
 
 ```swift
 var transactionsService = OpenBankingPFMAPI.transactionsClient()
+// In order to prevent bad requests
+transactionsService.clearQueryItems()
 
 let newTransaction = OBTransaction(accountId: 487870282, //The ID of the account that holds the transaction. It´s required.,
                                    date: 1678255200000, //The date of the transaction. It´s required.,
@@ -703,6 +743,9 @@ Given a valid transaction id updates a transaction. You can pass an object with 
 
 ```swift
 var transactionsService = OpenBankingPFMAPI.transactionsClient()
+// In order to prevent bad requests
+transactionsService.clearQueryItems()
+
 // Using some existing transaction
 transaction.transactionDescription = "Edited Transaction Test"
 
@@ -746,6 +789,9 @@ Deletes a transaction and all its information.
 
 ```swift
 var transactionsService = OpenBankingPFMAPI.transactionsClient()
+// In order to prevent bad requests
+transactionsService.clearQueryItems()
+
 let transactionId = 123456
 
 // Remote call
@@ -778,6 +824,9 @@ Fetches a list of budgets per user, sorted by ID in descending order.
 
 ```swift
 var budgetsService = OpenBankingPFMAPI.budgetsClient()
+// In order to prevent bad requests
+budgetsService.clearQueryItems()
+
 let userId = 123456
 
 // Remote call
@@ -822,28 +871,40 @@ Possible Errors:
 
 Given a valid budget ID, fetches the information of a budget.
 
-```
-const budgetId = 982908114;
-budgetsClient
-    .get(budgetId)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
+```swift
+var budgetsService = OpenBankingPFMAPI.budgetsClient()
+// In order to prevent bad requests
+budgetsService.clearQueryItems()
+
+let budgetId = 123456
+
+// Remote call
+budgetsService.get(withID: budgetId) { (result: Result<OBBudget>) in
+    switch result {
+    case .success(let result):
+// Set the parsed budget into your datasource
+        self?.dataSource = [result]
+    case .failure(let error):
+        print("Error: \(error.localizedDescription)")
+    }
+}
 ```
 
 Output:
 
-```
-Budget {
-    id: 982908114,
-    categoryId: 11,
-    name: "Sports",
-    amount: 1111.00,
-    warningPercentage: 0.70,
-    spent: 0.00,
-    leftToSpend: 1111.00,
-    status: "ok",
-    dateCreated: 1677714920234,
-    lastUpdated: 1677714920234
+```swift
+class OBBudget: Codable {
+    public var id: Int?
+    public var userId: Int?
+    public var categoryId: Int?
+    public var name: String
+    public var amount: Double
+    public var warningPercentage: Float?
+    public var spent: Double?
+    public var leftToSpend: Double?
+    public var status: String?
+    public var dateCreated: Int?
+    public var lastUpdated: Int?
 }
 ```
 
@@ -857,38 +918,42 @@ Possible Errors:
 
 Creates a budget. A previously created user and a category is required. There can be only one budget per category.
 
-```
-import { BudgetPayload } from "open-banking-pfm-sdk";
-...
-const newBudgetData = new BudgetPayload(
-    {
-        amount: 100, //The amount of the budget. It's required.
-        categoryId: 62, //The category ID of the budget. It's required.
-        name: "Donaciones", //The name of the budget. It's required.
-        userId: 1859616, //The ID of the user that owns the budget. It's required.
-        warningPercentage: 0.5 //The percentage where the budget status changes from stable to warning. This is optinal field. By default is 0.7.
-    }
-);
+```swift
+var budgetsService = OpenBankingPFMAPI.budgetsClient()
+// In order to prevent bad requests
+budgetsService.clearQueryItems()
 
-budgetsClient.create(newBudgetData)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
+let newBudget = OBBudget(userId: 1859616, //The ID of the user that owns the budget. It's required.
+         categoryId: 62, //The category ID of the budget. It's required.
+         name: "Donaciones", //The name of the budget. It's required.
+         amount: 100) //The amount of the budget. It's required.
+
+// Remote call
+budgetsService.create(budget) { (result: Result<OBBudget>) in
+    switch result {
+    case .success(let result):
+        print(result)
+    case .failure(let error):
+        print("Error: \(error.localizedDescription)")
+    }
+}
 ```
 
 Output:
 
-```
-Budget {
-    id: 234924782,
-    categoryId: 62,
-    name: "Donaciones",
-    amount: 100.00,
-    warningPercentage: 0.70,
-    spent: 0.00,
-    leftToSpend: 100.00,
-    status: "ok",
-    dateCreated: 1678317204886,
-    lastUpdated: 1678317204886
+```swift
+class OBBudget: Codable {
+    public var id: Int?
+    public var userId: Int?
+    public var categoryId: Int?
+    public var name: String
+    public var amount: Double
+    public var warningPercentage: Float?
+    public var spent: Double?
+    public var leftToSpend: Double?
+    public var status: String?
+    public var dateCreated: Int?
+    public var lastUpdated: Int?
 }
 ```
 
@@ -902,29 +967,41 @@ Possible Errors:
 
 Update a budget. You can pass an object with the properties to update ( `amount`: _number_, `name`: _string_, `warningPercentage`: _number_ ).
 
-```
-const modifiedBudgetData = { amount: 500 };
+```swift
+var budgetsService = OpenBankingPFMAPI.budgetsClient()
+// In order to prevent bad requests
+budgetsService.clearQueryItems()
 
-budgetsClient
-    .edit(budgetId, modifiedBudgetData)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
+// Using some existing budget
+budget.amount = 500
+
+// Remote call
+categoryService.edit(budget) { (result: Result<OBBudget>) in
+    switch result {
+    case .success(let result):
+        print(result)
+    case .failure(let error):
+        print("Error: \(error.localizedDescription)")
+    }
+}
+
 ```
 
 Output:
 
-```
-Budget {
-    id: 234924782,
-    categoryId: 62,
-    name: "Donaciones",
-    amount: 500.00,
-    warningPercentage: 0.70,
-    spent: 0.00,
-    leftToSpend: 100.00,
-    status: "ok",
-    dateCreated: 1678317204886,
-    lastUpdated: 1678317204886
+```swift
+class OBBudget: Codable {
+    public var id: Int?
+    public var userId: Int?
+    public var categoryId: Int?
+    public var name: String
+    public var amount: Double
+    public var warningPercentage: Float?
+    public var spent: Double?
+    public var leftToSpend: Double?
+    public var status: String?
+    public var dateCreated: Int?
+    public var lastUpdated: Int?
 }
 ```
 
@@ -938,11 +1015,22 @@ Possible Errors:
 
 Deletes a budget and all its information.
 
-```
-budgetsClient
-    .delete(budgetId)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
+```swift
+var budgetsService = OpenBankingPFMAPI.budgetsClient()
+// In order to prevent bad requests
+budgetsService.clearQueryItems()
+
+let budgetId = 123456
+
+// Remote call
+budgetsService.delete(withID: budgetId) { (result:Result<Bool>) in
+    switch result {
+    case .success(let result):
+        print(result)
+    case .failure(let error):
+        print("Error: \(error.localizedDescription)")
+    }
+}
 ```
 
 If the budget was removed, the response will be returned as true.
@@ -964,58 +1052,40 @@ How to use
 
 Given a bank ID and a user ID, create consent and retrieve the url for ask it.
 
-```
-const bankId = 'c55a1362-93fd-49eb-86ae-d82205b861c5'; //The ID of the bank to request
-const userId = 487969842; //The ID of the user to request.
-const time = 3; //Term of expiration of consent expressed in months: 3, 6 or 12.
+```swift
+var bankService = OpenBankingPFMAPI.banksClient()
+// In order to prevent bad requests
+bankService.clearQueryItems()
 
-banksClient
-    .createConsent(bankId, userId, time)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
-```
+let userId = 487969842 //The ID of the user to request.
+let time = 3 //Term of expiration of consent expressed in months: 3, 6 or 12.
+let bankId = "c55a1362-93fd-49eb-86ae-d82205b861c5" //The ID of the bank to request
 
-Output:
+banksService = banksService.userId(userId)
+banksService = banksService.time(time)
 
-```
-{
-    bankId: "c55a1362-93fd-49eb-86ae-d82205b861c5",
-    userId: 487969842,
-    url: "https://auth1.tboz-csbx.staging.ozoneapi-br.com/auth?client_id=75deaf3f-2597-48a0-bf70"
+// Remote call
+banksService.createConsent(withBankId: bankId) { (result: Result<OBCreateConsentResponse>) in
+    switch result {
+    case .success(let result):
+        print(result)
+    case .failure(let error):
+        print("Error: \(error.localizedDescription)")
+    }
 }
 ```
 
-Possible Errors:
-
-* [Error 400](#error-400)
-* [Error 401](#error-401)
-* [Error 404](#error-404)
-* [Error 500](#error-500)
-
-### Authorize Bank Consent
-
-The code, token and consent state are received to authorize of the consent. In the background, the consent is consumed.
-
-This function not requires the ApiKey, so in the client constructor you don't have to specify it.
-
-```
-import { BanksClient } from 'open-banking-pfm-sdk';
-const serverUrl = 'https://pfmapiserver.com/api/v1/';
-const banksClient = new BanksClient ({ serverUrl });
-```
-
-```
-const code = 'c55a136207f52861-97e8-4329-8bc5-c324089de119'; //The authCode given by the bank
-const id_token = 'eyJhbGciOiJQUzI1NiIsImtpZCI6IkpWdlBicE12bjVaVFJKaGhTaFFGcllJVElHQklVZj'; //The token given by the bank
-const state = '3fa85f64-5717-4562-b3fc-2c963f66afa6'; //The state given by the bank.
-
-banksClient
-    .authorize(code, id_token, state)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
-```
-
 Output:
+
+```swift
+class OBBank: Codable {
+    public var name: String
+    public var bankId: String
+    public var financialEntityId: Int
+    public var imagePath: String?
+    public var isBankAggregation: Bool
+}
+```
 
 Possible Errors:
 
@@ -1028,22 +1098,34 @@ Possible Errors:
 
 Action to obtain bank aggregation status. The status can be __'CONSENT\_REQUESTED' , 'CONSENT\_AUTHORISED', 'CONSENT\_REJECTED' , 'CONSENT\_DELETED' , 'AGGREGATION\_STARTED' , 'AGGREGATION\_COMPLETED' , 'PROCESS\_FAILED'__
 
-```
-const bankId = 'c55a1362-93fd-49eb-86ae-d82205b861c5'; //The ID of the bank to request
-const userId = 487969842; //The ID of the user to request.
-banksClient
-    .getAggregationStatus(bankId, userId)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
+```swift
+var bankService = OpenBankingPFMAPI.banksClient()
+// In order to prevent bad requests
+bankService.clearQueryItems()
+
+let bankId = "c55a1362-93fd-49eb-86ae-d82205b861c5" //The ID of the bank to request
+let userId = 487969842 //The ID of the user to request.
+
+banksService = banksService.userId(userId)
+
+// Remote call
+banksService.getAggregationStatus(withBankId: bankId) { (result:Result<OBBankAggregationStatusResponse>) in
+    switch result {
+    case .success(let result):
+        print(result)
+    case .failure(let error):
+        print("Error: \(error.localizedDescription)")
+    }
+}
 ```
 
 Output:
 
-```
-{
-    bankId: "c55a1362-93fd-49eb-86ae-d82205b861c5",
-    userId: 487969842,
-    status: "CONSENT_REQUESTED"
+```swift
+class OBBankAggregationStatusResponse: Codable {
+    public var bankId: String
+    public var userId: Int
+    public var status: String
 }
 ```
 
@@ -1054,54 +1136,38 @@ Possible Errors:
 * [Error 404](#error-404)
 * [Error 500](#error-500)
 
-### Bank aggregation status with Long Polling
-
-Starts a long polling to get bank aggregation status.
-
-```
-const options = {
-    bankId: 2230303, //The ID of the bank to request. Is required
-    userId: 1111, //The ID of the user to request. Is required.
-    onResponse: () => null, //Triggered when the response is received.
-    onError: () => null //Triggered when a server error occurs
-    time: 5000 //Interval between requests
-};
-
-banksClient
-    .aggregationStatusSubscribe(options)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
-```
-
-To stop the long polling:
-
-```
-banksClient.aggregationStatusUnsubscribe();
-```
-
 ### Get Bank Resources
 
 Consult the resources granted to the user for the given bank and start in the background the aggregation of the resources that the user is authorised to user.
 
-```
-const bankId = 'c55a1362-93fd-49eb-86ae-d82205b861c5'; //The ID of the bank to request
-const userId = 487969842; //The ID of the user to request.
+```swift
+var bankService = OpenBankingPFMAPI.banksClient()
+// In order to prevent bad requests
+bankService.clearQueryItems()
 
-banksClient
-    .getResources(bankId, userId)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
+let bankId = "c55a1362-93fd-49eb-86ae-d82205b861c5" //The ID of the bank to request
+let userId = 487969842 //The ID of the user to request.
+
+banksService = banksService.userId(userId)
+
+// Remote call
+banksService.getResources(withBankId: bankId) { (result:Result<OBResourcesResponse>) in
+    switch result {
+    case .success(let result):
+        print(result)
+    case .failure(let error):
+        print("Error: \(error.localizedDescription)")
+    }
+}
 ```
 
 Output:
 
-```
-{
-    bankId: "c55a1362-93fd-49eb-86ae-d82205b861c5",
-    userId: 487969842,
-    resources: [
-        "ACCOUNT", "CREDIT_CARD_ACCOUNT"
-    ]
+```swift
+class OBResourcesResponse: Codable {
+    public var bankId: String
+    public var userId: Int
+    public var resources: [String]
 }
 ```
 
@@ -1116,86 +1182,28 @@ Possible Errors:
 
 Start of the resources that the user is authorised for.
 
-```
-const bankId = 'c55a1362-93fd-49eb-86ae-d82205b861c5'; //The ID of the bank to request
-const userId = 487969842; //The ID of the user to request.
+```swift
+var bankService = OpenBankingPFMAPI.banksClient()
+// In order to prevent bad requests
+bankService.clearQueryItems()
 
-banksClient
-    .synchronize(bankId, userId)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
-```
+let bankId = "c55a1362-93fd-49eb-86ae-d82205b861c5" //The ID of the bank to request
+let userId = 487969842 //The ID of the user to request.
 
-Output:
+banksService = banksService.userId(userId)
 
-Possible Errors:
-
-* [Error 400](#error-400)
-* [Error 401](#error-401)
-* [Error 404](#error-404)
-* [Error 500](#error-500)
-
-### Consume Bank Consent (deprecated)
-
-Given a authCode, token and state, consume consent and retrieve consent's status.
-
-```
-const authCode = 'c55a136207f52861-97e8-4329-8bc5-c324089de119'; //The authCode given by the bank
-const token = 'eyJhbGciOiJQUzI1NiIsImtpZCI6IkpWdlBicE12bjVaVFJKaGhTaFFGcllJVElHQklVZj'; //The token given by the bank
-const state = '3fa85f64-5717-4562-b3fc-2c963f66afa6'; //The state given by the bank.
-
-banksClient
-    .consumeConsent(authCode, token, state)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
-```
-
-Output:
-
-```
-{
-    status: "CONSENT_AUTHORISED"
+// Remote call
+banksService.synchronize(withBankId: bankId) { (result: Result<Bool>) in
+    switch result {
+    case .success(let result):
+        print(result)
+    case .failure(let error):
+        print("Error: \(error.localizedDescription)")
+    }
 }
 ```
 
-Possible Errors:
-
-* [Error 400](#error-400)
-* [Error 401](#error-401)
-* [Error 404](#error-404)
-* [Error 500](#error-500)
-
-### Aggregate Banks (deprecated)
-
-Retrieve a list of banks that have successfully completed the bank aggregation process.
-
-```
-const userId = 10; //The ID of the user to request.
-
-banksClient
-    .getAggregates(userId)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
-```
-
 Output:
-
-```
-[
-    BankAggregated {
-        consentId: "urn:consumption:aac-649a4ef6-d4b4-43a8-b32e-1aba5a0355fd",
-        originBankName: null,
-        customerIdentification: null,
-        cpf: "76109277673",
-        targetInstitution: "consumptionSandboxAuth1234",
-        deadline: 0,
-        expirationDay: 1686184974479,
-        status: "CONSENT_REQUESTED",
-        isSynchronized: null
-    },
-...
-]
-```
 
 Possible Errors:
 
@@ -1215,30 +1223,40 @@ How to use
 
 Given a valid consent ID, fetches the information of a consent.
 
-```
-consentsClient
-    .get(consentId)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
+```swift
+var consentsService = OpenBankingPFMAPI.consentsClient()
+// In order to prevent bad requests
+consentsService.clearQueryItems()
+
+let consentId = "some_consent_id"
+
+// Remote call
+consentsService.get(withID: consentId) { (result: Result<OBConsent>) in
+    switch result {
+    case .success(let result):
+// Set the parsed consent into your datasource
+        self?.dataSource = [result]
+    case .failure(let error):
+        print("Error: \(error.localizedDescription)")
+    }
+}
 ```
 
 Output:
 
-```
-ConsentDetail {
-    consentId: "urn:consumption:aac-372ed338-76e7-4616-b793-e792b74215d7",
-    originBankName: "test304 test304 test304",
-    customerIdentification: null,
-    cpf: null,
-    BankConsent: {
-        bankId: 885402086,
-        name: "Consumption Sandbox Auth Server"
-    },
-    purpose: "Finanças Pessoais",
-    deadline: 3,
-    status: "ACTIVATED",
-    isSynchronized: false
-},
+```swift
+class OBConsent: Codable {
+    public var consentId: String?
+    public var expirationDate: Int?
+    public var bank: OBBankConsent
+    public var status: String
+    public var originBankName: String?
+    public var customerIdentification: String?
+    public var cpf: String?
+    public var purpose: String?
+    public var deadline: Int?
+    public var isSynchronized: Bool?
+}
 ```
 
 Possible Errors:
@@ -1252,32 +1270,43 @@ Possible Errors:
 
 Fetches a list of consents per user.
 
-```
-const filterOptions = {
-    type: 'ACTIVATED' | 'PENDING' | 'EXPIRED' | 'CANCELLED', //Optional
-    status: 'RECEIVED' | 'TRANSMITTED' //Optional
-};
+```swift
+var consentsService = OpenBankingPFMAPI.consentsClient()
+// In order to prevent bad requests
+consentsService.clearQueryItems()
 
-consentsClient
-    .getList(userId, filterOptions)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
+let userId = 123456
+consentsService = consentsService.userId(userId)
+
+// Remote call
+consentsService.getList { (result: Result<OBConsentsResponse<[OBConsent]>>) in
+    switch result {
+    case .success(let result):
+// Set the parsed consents into your datasource
+        self?.dataSource = result.consents
+    case .failure(let error):
+        print("Error: \(error.localizedDescription)")
+    }
+}
+
+
 ```
 
 Output:
 
-```
-[
-Consent {
-    consentId: "urn:consumption:aac-372ed338-76e7-4616-b793-e792b74215d7",
-    expirationDate: 1688513720224,
-    BankConsent: {
-        bankId: 885402086,
-        name: "Consumption Sandbox Auth Server"
-    },
-    status: "ACTIVATED"
-    }
-]
+```swift
+class OBConsent: Codable {
+    public var consentId: String?
+    public var expirationDate: Int?
+    public var bank: OBBankConsent
+    public var status: String
+    public var originBankName: String?
+    public var customerIdentification: String?
+    public var cpf: String?
+    public var purpose: String?
+    public var deadline: Int?
+    public var isSynchronized: Bool?
+}
 ```
 
 Possible Errors:
@@ -1291,11 +1320,22 @@ Possible Errors:
 
 A consent is canceled given the identifier.
 
-```
-consentsClient
-    .delete(consentId)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
+```swift
+var consentsService = OpenBankingPFMAPI.consentsClient()
+// In order to prevent bad requests
+consentsService.clearQueryItems()
+
+let consentId = "some_consent_id"
+
+// Remote call
+consentsService.delete(withID: consentId) { (result: Result<Bool>) in
+    switch result {
+    case .success(let result):
+        print(result)
+    case .failure(let error):
+        print("Error: \(error.localizedDescription)")
+    }
+}
 ```
 
 If the consent was cancelled, the response will be returned as true.
@@ -1317,44 +1357,58 @@ How to use
 
 Fetches a list of credit accounts per user.
 
-```
-creditsClient
-    .getList(userId)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
+```swift
+var creditsService = OpenBankingPFMAPI.creditsClient()
+// In order to prevent bad requests
+creditsService.clearQueryItems()
+
+let userId = 123456
+creditsService = creditsService.userId(userId)
+
+// Remote call
+creditsService.getList { (result: Result<OBCreditResponse<[OBCredit]>>) in
+    switch result {
+    case .success(let result):
+// Set the parsed credits into your datasource
+        self?.dataSource = result.data
+    case .failure(let error):
+        print("Error: \(error.localizedDescription)")
+    }
+}
 ```
 
 The ID of the user that owns the accounts is required.
 
 Output:
 
-```
-{
-    "data": [
-        {
-            "id": 927241071,
-            "providerId": "141000000000000000000013",
-            "financialEntityId": 941746456,
-            "nature": "Credit card",
-            "name": "Cartão INFINITE",
-            "number": "Cartão INFINITE",
-            "balance": 8247.81,
-            "chargeable": false,
-            "dateCreated": 1682652624964,
-            "lastUpdated": 1682652624964,
-            "lineName": "CREDITO_A_VISTA",
-            "availableAmount": 8247.8111,
-            "limitAmount": 49856.0111,
-            "usedAmount": 41609.2111,
-            "isBankAggregation": true
-        }
-    ],
-    "nextCursor": null,
-    "totalBalance": {
-        "availableAmount": 8247.8111,
-        "limitAmount": 49856.0111,
-        "usedAmount": 41609.2111
-    }
+```swift
+class OBCreditResponse<T: Codable>: Codable {
+    var data: [OBCredit]?
+    var nextCursor: Int?
+    var totalBalance: OBCreditTotalBalance?
+}
+
+class OBCreditTotalBalance: Codable {
+    var availableAmount: Double?
+    var limitAmount: Double?
+    var userAmount: Double?
+}
+
+class OBCredit: Codable {
+    var id: Int
+    var providerId: String?
+    var financialEntityId: Int
+    var nature: String?
+    var name: String?
+    var number: String?
+    var chargeable: Bool
+    var dateCreated: Int
+    var lastUpdated: Int
+    var lineName: String?
+    var availableAmount: Double
+    var limitAmount: Double
+    var usedAmount: Double
+    var isBankAggregation: Bool
 }
 ```
 
@@ -1375,78 +1429,80 @@ How to use
 
 Given a valid user ID, fetches a resume of the financial information of a user. It contains expenses, incomes and balances.
 
-```
-const insightsOptions = {
-    accountId:525742481,//Mandatory
-    dateFrom: number,//Optional
-    dateTo: number;//Optional
-}
+```swift
+var insightService = OpenBankingPFMAPI.insightsClient()
+// In order to prevent bad requests
+insightService.clearQueryItems()
 
-insightsClient
-    .getResume(userId, insightsOptions)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
+let userId = 123456
+
+// Remote call
+insightService.userId(userId).getResume { (result: Result<OBSummaryResponse<OBResumeBalance>>) in
+    switch result {
+    case .success(let result):
+// Set the parsed resume into your datasource
+        self?.dataSource = result
+    case .failure(let error):
+        print("Error: \(error.localizedDescription)")
+    }
+}
 ```
 
 Output:
 
-```
-Resume {
-    incomes: [],
-    expenses: [
-        IncomeExpense {
-            date: 1672552800000,
-            categories: [
-                CategoryResume {
-                    categoryId: 2,
-                    amount: 720.82,
-                    subcategories: [
-                        SubcategoryInsights {
-                            categoryId: 16,
-                            amount: 720.82,
-                            transactionsByDate: [
-                                TransactionsByDate {
-                                    date: 1674194400000,
-                                    transactions: [
-                                        Transaction {
-                                            id: 796541939,
-                                            date: 1674194400000,
-                                            charge: true,
-                                            description: 'Clk*Compao Plaza',
-                                            amount: 720.82,
-                                            categoryId: 16,
-                                            dateCreated: 1676572948884,
-                                            lastUpdated: 1676981093696
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                },
-                CategoryResume {
-                    categoryId: 4,
-                    amount: 433.82,
-                    subcategories: [ [SubcategoryInsights] ]
-                },
-                CategoryResume {
-                    categoryId: 7,
-                    amount: 369.82,
-                    subcategories: [ [SubcategoryInsights] ]
-                }
-            ],
-            amount: 1524.46
-        },
-        IncomeExpense {
-            date: 1675231200000,
-            categories: [Array],
-            amount: 12006.02
-        }
-    ],
-    balances: [
-        Balance { incomes: 0, expenses: 12006.02, date: 1675231200000 },
-        Balance { incomes: 0, expenses: 1524.46, date: 1672552800000 }
-    ]
+```swift
+class OBSummaryResponse<T: Codable>: Codable {
+    let incomes: [OBIncome]?
+    let expenses: [OBExpense]?
+    let balances: [OBBalance]?
+}
+
+struct OBIncome: Codable {
+    let date: Int
+    let categories: [OBResumeByCategory]
+    let amount: Double
+}
+
+struct OBExpense: Codable {
+    let date: Int
+    let categories: [OBResumeByCategory]
+    let amount: Double
+}
+
+struct OBBalance: Codable {
+    let date: Int
+    let incomes: Double
+    let expenses: Double
+}
+
+struct OBResumeByCategory: Codable {
+    let categoryId: Int
+    let amount: Double
+    let subcategories: [OBResumeBySubcategory]
+}
+
+struct OBResumeBySubcategory: Codable {
+    let categoryId: Int
+    let amount: Double
+    let transactionsByDate: [OBTransactionsByDate]
+}
+
+struct OBTransactionsByDate: Codable {
+    let date: Int
+    let transactions: [OBTransaction]
+}
+
+struct OBTransaction: Codable {
+    public var id: Int?
+    public var accountId: Int?
+    public var date: Int
+    public var charge: Bool
+    public var transactionDescription: String
+    public var amount: Double
+    public var categoryId: Int?
+    public var dateCreated: Int?
+    public var lastUpdated: Int?
+    public var isBankAggregation: Bool?
 }
 ```
 
@@ -1460,74 +1516,56 @@ Possible Errors:
 
 Given a valid user ID, fetches an analysis of the financial information of a user. It contains expenses, incomes and balances. It receives an object as parameter, accountId is required.
 
-```
-const insightsOptions = {
-    accountId:525742481,//Required
-    dateFrom: number,//Optional
-    dateTo: number;//Optional
+```swift
+var insightService = OpenBankingPFMAPI.insightsClient()
+// In order to prevent bad requests
+insightService.clearQueryItems()
+
+let userId = 123456
+
+// Remote call
+insightService.userId(userId).getAnalysis { (result: Result<OBAnalysisResponse<OBAnalysis>>) in
+    switch result {
+    case .success(let result):
+// Set the parsed analysis into your datasource
+        self.dataSource = result.data
+    case .failure(let error):
+        print("Error: \(error.localizedDescription)")
+    }
 }
-insightsClient
-    .getAnalysis(userId, insightsOptions)
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
 ```
 
 Output:
 
-```
-[
-    Analysis {
-        date: 1672552800000,
-        categories: [
-            CategoryAnalysis {
-                categoryId: 2,
-                amount: 720.82,
-                subcategories: [
-                    SubcategoryAnalysis {
-                        categoryId: 16,
-                        average: 720.82,
-                        quantity: 1,
-                        amount: 720.82,
-                        transactions: [
-                            TransactionAnalysis {
-                                description: 'Clk*Compao Plaza',
-                                average: 720.82,
-                                quantity: 1,
-                                amount: 720.82
-                            }
-                        ]
-                    }
-                ]
-            },
-            CategoryAnalysis {
-                categoryId: 4,
-                amount: 433.82,
-                subcategories: [ [SubcategoryAnalysis] ]
-            },
-            CategoryAnalysis {
-                categoryId: 7,
-                amount: 369.82,
-                subcategories: [ [SubcategoryAnalysis] ]
-            }
-        ]
-    },
-    Analysis {
-        date: 1675231200000,
-        categories: [
-            [CategoryAnalysis],
-            [CategoryAnalysis],
-            [CategoryAnalysis],
-            [CategoryAnalysis],
-            [CategoryAnalysis],
-            [CategoryAnalysis],
-            [CategoryAnalysis]
-        ]
-    },
-    Analysis {
-        date: 1677650400000,
-        categories: [ [CategoryAnalysis] ]
-    }
-]
+```swift
+struct OBAnalysis: Codable {
+    let data: [OBAnalysisByDate]
+}
+
+struct OBAnalysisByDate: Codable {
+    let date: Int
+    let categories: [Category]
+}
+
+struct Category: Codable {
+    let categoryID: Int
+    let amount: Double
+    let subcategories: [Subcategory]
+}
+
+struct Subcategory: Codable {
+    let categoryID: Int
+    let amount, average: Double
+    let quantity: Int
+    let transactions: [Transaction]
+}
+
+struct Transaction: Codable {
+    let transactionDescription: String
+    let average: Double
+    let quantity: Int
+    let amount: Double
+}
 ```
 
 Possible Errors:
@@ -1536,41 +1574,6 @@ Possible Errors:
 * [Error 404](#error-404)
 * [Error 500](#error-500)
 
-# Helpers
-
-Helpers are functions that can complement the use of clients.
-
-How to use
-----------
-
-### Build Clients
-
-This function is used to instantiate all clients with a single call.
-
-```
-import { buildClients } from 'open-banking-pfm-sdk';
-//The constructor receives an object with two properties, the first is the api key to validate access to all of its functions, the second is the API Server Url, both are required.
-const apiKey = 'XXXX-XXXX-XXXX';
-const serverUrl = 'https://pfmapiserver.com/api/v1/';
-const clients = new buildClients({ apiKey, serverUrl });
-console.log(clients);
-```
-
-Output:
-
-```
-ClientDictionary {
-    accountsClient: AccountsClient,
-    banksClient: BanksClient,
-    budgetsClient: IBudgetsClient;
-    categoriesClient: ICategoriesClient;
-    transactionsClient: TransactionsClient,
-    usersClient: UsersClient,
-    creditsClient: CreditsClient,
-    consentsClient: ConsentsClient
-}
-```
-
 # Error Codes
 
 Error 400
@@ -1578,7 +1581,7 @@ Error 400
 
 Something in your request was wrong.
 
-```
+```json
 {
   "errors": [
     {
@@ -1600,7 +1603,7 @@ Error 404
 
 The requested param was not found.
 
-```
+```json
 {
     "errors": [
         {
