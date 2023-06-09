@@ -4,6 +4,7 @@ The Open Banking PFM SDK uses Client classes and with **Promises** to get respon
 
 # Table of contents
 
+* [Installation](#installation)
 * [Users Client](#users-client)
 * [Banks Client](#banks-client)
 * [Categories Client](#categories-client)
@@ -14,8 +15,41 @@ The Open Banking PFM SDK uses Client classes and with **Promises** to get respon
 * [Consents Client](#consents-client)
 * [Credits Client](#credits-client)
 * [Insights Client](#insights-client)
-* [Helpers](#helpers)
 * [Error Codes](#error-codes)
+
+# Installation
+
+## Cocoapods
+
+Make sure you are running the latest version of [CocoaPods](https://cocoapods.org/) by running:
+
+```shell
+gem install cocoapods
+
+# (or if the above fails)
+sudo gem install cocoapods
+```
+
+Update your local specs repo by running:
+
+```shell
+pod repo update
+```
+
+**Note:** This step is optional, if you updated the specs repo recently.
+
+Add the following lines to your `Podfile`:
+
+```ruby
+pod 'OpenBankingCore'
+pod 'OpenBankingPFMSDK'
+```
+
+Run `pod install` and you're all set!
+
+# Configuration
+
+
 
 # Users Client
 
@@ -56,12 +90,42 @@ class OBUser: Codable {
     public var dateCreated: Int
 }
 ```
-
-Possible Errors:
-
-* [Error 400](#error-400)
-* [Error 404](#error-404)
-* [Error 500](#error-500)
+<details><summary><h4>Possible Errors</h4></summary>
+  
+  ### Error 400
+Something in your request was wrong.
+```json
+{
+  "errors": [
+    {
+      "code": "string",
+      "title": "string",
+      "detail": "string"
+    }
+  ]
+}
+```
+## Error 404
+The requested param was not found.
+```json
+{
+	"errors": [
+	    {
+	      "code": "string",
+	      "title": "string",
+	      "detail": "string"
+	    }
+	]
+}
+```
+## Error 500
+Something in your request was wrong.
+```json
+{
+	"message": "string"
+}
+```
+</details>
 
 # Banks Client
 
@@ -984,7 +1048,6 @@ categoryService.edit(budget) { (result: Result<OBBudget>) in
         print("Error: \(error.localizedDescription)")
     }
 }
-
 ```
 
 Output:
@@ -1288,8 +1351,6 @@ consentsService.getList { (result: Result<OBConsentsResponse<[OBConsent]>>) in
         print("Error: \(error.localizedDescription)")
     }
 }
-
-
 ```
 
 Output:
