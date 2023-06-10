@@ -447,6 +447,7 @@ Something in your request was wrong.
 }
 ```
 </details>
+
 ### Update Category
 
 Given a valid category id updates a category. You can pass an object with the properties to update ( `name`: _string_, `color`: _string_, `parentCategoryId`: \[_number_, nil] ).
@@ -524,6 +525,7 @@ Something in your request was wrong.
 }
 ```
 </details>
+
 ### Delete Category
 
 Given a valid category id deletes a category.
