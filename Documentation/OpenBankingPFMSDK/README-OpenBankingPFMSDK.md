@@ -48,8 +48,6 @@ Run `pod install` and you're all set!
 
 # Configuration
 
-
-
 # Users Client
 
 This client contains the available actions related to users. In order to successfully integrate the following functions, it is important to previously load the users explained in the installation guide.
@@ -89,11 +87,14 @@ class OBUser: Codable {
     public var dateCreated: Int
 }
 ```
+
 <details>
 <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -105,26 +106,120 @@ Something in your request was wrong.
   ]
 }
 ```
+
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
+</details>
+
+### Get Financial Entities
+
+Fetches the information of the user's financial entities.
+
+```swift
+var usersService = OpenBankingPFMAPI.usersClient()
+// In order to prevent bad requests
+usersService.clearQueryItems()
+
+// Optional parameter
+if let isBankAggregation = isBankAggregation {
+    usersService = usersService.isBankAggregation(isBankAggregation)
+}
+
+usersService.getFinancialEntities { [weak self] (result: Result<FinancialEntitiesArray<OBFinancialEntity>>) in
+    switch result {
+    case .success(let result):
+        self?.dataSource = result
+        completion(true)
+    case .failure(let error):
+        print(error)
+        completion(false)
+    }
+}
+```
+
+Output:
+
+```swift
+class OBFinancialEntity: Codable {
+    public let lastUpdated: Double?
+    public let id: Double?
+    public let code: String?
+    public let dateCreated: Double?
+    public let imagePath: String?
+    public let isBankAggregation: Bool?
+    public let name: String?
+}
+```
+
+<details>
+  <summary><h4>Possible Errors</h4></summary>
+
+### Error 400
+
+Something in your request was wrong.
+
+```json
+{
+  "errors": [
+    {
+      "code": "string",
+      "title": "string",
+      "detail": "string"
+    }
+  ]
+}
+```
+
+## Error 404
+
+The requested param was not found.
+
+```json
+{
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
+}
+```
+
+## Error 500
+
+Something in your request was wrong.
+
+```json
+{
+    "message": "string"
+}
+```
+
 </details>
 
 # Banks Client
@@ -175,11 +270,14 @@ class OBBank: Codable {
     public var isBankAggregation: Bool
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -191,17 +289,21 @@ Something in your request was wrong.
   ]
 }
 ```
+
 ## Error 401
 
 Invalid authorization.
 
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 # Categories Client
@@ -256,11 +358,14 @@ class OBCategory: Codable {
     public var dateCreated: Int?
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -272,26 +377,33 @@ Something in your request was wrong.
   ]
 }
 ```
+
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 ### Get Category
@@ -331,11 +443,14 @@ class OBCategory: Codable {
     public var dateCreated: Int?
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -349,25 +464,31 @@ Something in your request was wrong.
 ```
 
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 ### Create Category
@@ -410,11 +531,14 @@ class OBCategory: Codable {
     public var dateCreated: Int?
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -426,26 +550,33 @@ Something in your request was wrong.
   ]
 }
 ```
+
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 ### Update Category
@@ -488,11 +619,14 @@ class OBCategory: Codable {
     public var dateCreated: Int?
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -504,26 +638,33 @@ Something in your request was wrong.
   ]
 }
 ```
+
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 ### Delete Category
@@ -549,11 +690,14 @@ categoriesService.delete(withID: categoryId) { (result: Result<Bool>) in
 ```
 
 If the category was removed, the response will be returned as true.
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -565,26 +709,33 @@ Something in your request was wrong.
   ]
 }
 ```
+
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 # Accounts Client
@@ -644,11 +795,14 @@ class OBAccount: Codable {
     let isBankAggregation: Bool?
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -662,25 +816,31 @@ Something in your request was wrong.
 ```
 
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 ### Get Account
@@ -724,11 +884,14 @@ class OBAccount: Codable {
     let isBankAggregation: Bool?
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -742,25 +905,31 @@ Something in your request was wrong.
 ```
 
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 ### Create Account
@@ -812,11 +981,14 @@ class OBAccount: Codable {
     let isBankAggregation: Bool?
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -830,25 +1002,31 @@ Something in your request was wrong.
 ```
 
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 ### Update Account
@@ -892,11 +1070,14 @@ class OBAccount: Codable {
     let isBankAggregation: Bool?
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -910,25 +1091,31 @@ Something in your request was wrong.
 ```
 
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 ### Delete Account
@@ -952,11 +1139,14 @@ accountsService.delete(withID: accountId) { (result:Result<Bool>) in
     }
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -970,25 +1160,31 @@ Something in your request was wrong.
 ```
 
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 # Transactions Client
@@ -1037,11 +1233,14 @@ struct OBTransaction: Codable {
     public var isBankAggregation: Bool?
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -1055,25 +1254,31 @@ Something in your request was wrong.
 ```
 
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 ### Get Transaction
@@ -1115,11 +1320,14 @@ struct OBTransaction: Codable {
     public var isBankAggregation: Bool?
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -1133,25 +1341,31 @@ Something in your request was wrong.
 ```
 
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 ### Create Transaction
@@ -1196,11 +1410,14 @@ struct OBTransaction: Codable {
     public var isBankAggregation: Bool?
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -1214,25 +1431,31 @@ Something in your request was wrong.
 ```
 
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 ### Update Transaction
@@ -1274,11 +1497,14 @@ struct OBTransaction: Codable {
     public var isBankAggregation: Bool?
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -1292,25 +1518,31 @@ Something in your request was wrong.
 ```
 
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 ### Delete Transaction
@@ -1334,11 +1566,14 @@ transactionsService.delete(withID: transactionId) { (result:Result<Bool>) in
     }
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -1352,25 +1587,31 @@ Something in your request was wrong.
 ```
 
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 # Budgets Client
@@ -1422,11 +1663,14 @@ class OBBudget: Codable {
     public var lastUpdated: Int?
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -1440,25 +1684,31 @@ Something in your request was wrong.
 ```
 
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 ### Get Budget
@@ -1501,11 +1751,14 @@ class OBBudget: Codable {
     public var lastUpdated: Int?
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -1519,25 +1772,31 @@ Something in your request was wrong.
 ```
 
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 ### Create Budget
@@ -1582,11 +1841,14 @@ class OBBudget: Codable {
     public var lastUpdated: Int?
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -1600,25 +1862,31 @@ Something in your request was wrong.
 ```
 
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 ### Update Budget
@@ -1661,11 +1929,14 @@ class OBBudget: Codable {
     public var lastUpdated: Int?
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -1679,25 +1950,31 @@ Something in your request was wrong.
 ```
 
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 ### Delete Budget
@@ -1726,9 +2003,11 @@ If the budget was removed, the response will be returned as true.
 
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -1742,25 +2021,31 @@ Something in your request was wrong.
 ```
 
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 # Bank Aggregation Client
@@ -1808,11 +2093,14 @@ class OBBank: Codable {
     public var isBankAggregation: Bool
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -1824,31 +2112,37 @@ Something in your request was wrong.
   ]
 }
 ```
+
 ## Error 401
 
 Invalid authorization.
 
-
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 ### Get Bank aggregation status
@@ -1885,11 +2179,14 @@ class OBBankAggregationStatusResponse: Codable {
     public var status: String
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -1901,31 +2198,37 @@ Something in your request was wrong.
   ]
 }
 ```
+
 ## Error 401
 
 Invalid authorization.
 
-
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 ### Get Bank Resources
@@ -1962,11 +2265,14 @@ class OBResourcesResponse: Codable {
     public var resources: [String]
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -1978,31 +2284,37 @@ Something in your request was wrong.
   ]
 }
 ```
+
 ## Error 401
 
 Invalid authorization.
 
-
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 ### Synchronize
@@ -2031,14 +2343,18 @@ banksService.synchronize(withBankId: bankId) { (result: Result<Bool>) in
 ```
 
 Output:
+
 ```swift
 true
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -2050,31 +2366,37 @@ Something in your request was wrong.
   ]
 }
 ```
+
 ## Error 401
 
 Invalid authorization.
 
-
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 # Consents Client
@@ -2123,11 +2445,14 @@ class OBConsent: Codable {
     public var isSynchronized: Bool?
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -2139,31 +2464,37 @@ Something in your request was wrong.
   ]
 }
 ```
+
 ## Error 401
 
 Invalid authorization.
 
-
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 ### Get Consent List
@@ -2206,11 +2537,14 @@ class OBConsent: Codable {
     public var isSynchronized: Bool?
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -2222,31 +2556,37 @@ Something in your request was wrong.
   ]
 }
 ```
+
 ## Error 401
 
 Invalid authorization.
 
-
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 ### Cancel Consent
@@ -2275,9 +2615,11 @@ If the consent was cancelled, the response will be returned as true.
 
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -2291,25 +2633,31 @@ Something in your request was wrong.
 ```
 
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 # Credits Client
@@ -2377,11 +2725,14 @@ class OBCredit: Codable {
     var isBankAggregation: Bool
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -2395,25 +2746,31 @@ Something in your request was wrong.
 ```
 
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 # Insights Client
@@ -2503,11 +2860,14 @@ struct OBTransaction: Codable {
     public var isBankAggregation: Bool?
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -2521,25 +2881,31 @@ Something in your request was wrong.
 ```
 
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
 
 ### Analysis
@@ -2597,11 +2963,14 @@ struct Transaction: Codable {
     let amount: Double
 }
 ```
+
 <details>
   <summary><h4>Possible Errors</h4></summary>
-  
-  ### Error 400
+
+### Error 400
+
 Something in your request was wrong.
+
 ```json
 {
   "errors": [
@@ -2615,23 +2984,29 @@ Something in your request was wrong.
 ```
 
 ## Error 404
+
 The requested param was not found.
+
 ```json
 {
-	"errors": [
-	    {
-	      "code": "string",
-	      "title": "string",
-	      "detail": "string"
-	    }
-	]
+    "errors": [
+        {
+          "code": "string",
+          "title": "string",
+          "detail": "string"
+        }
+    ]
 }
 ```
+
 ## Error 500
+
 Something in your request was wrong.
+
 ```json
 {
-	"message": "string"
+    "message": "string"
 }
 ```
+
 </details>
