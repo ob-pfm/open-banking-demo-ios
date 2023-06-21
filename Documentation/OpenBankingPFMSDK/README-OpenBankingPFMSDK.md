@@ -144,6 +144,60 @@ var usersService = OpenBankingPFMAPI.usersClient()
 // In order to prevent bad requests
 usersService.clearQueryItems()
 
+// FILTER PARAMETERS
+// Optional parameter
+if let page = page {
+// To ask for a specific page
+    usersService = usersService.page(page)
+}
+// Optional parameter
+if let size = size {
+// To indicate the number of items to show by page
+    usersService = usersService.size(size)
+}
+// Optional parameter
+if let field = field {
+    usersService = usersService.field(field)
+}
+// Optional parameter
+if let order = order {
+    usersService = usersService.order(order)
+}
+// Optional parameter
+if let categoryId = categoryId {
+// To ask for a specific category to filter
+    usersService = usersService.categoryId(categoryId)
+}
+// Optional parameter
+if let charge = charge {
+// To filter by type of transaction(true = charge, false = deposit, nil = both)
+    usersService = usersService.charge(charge)
+}
+// Optional parameter
+if let minAmount = minAmount {
+// The minimum amount of the transaction.
+    usersService = usersService.minAmount(minAmount)
+}
+// Optional parameter
+if let maxAmount = maxAmount {
+// The maximum amount of the transaction.
+    usersService = usersService.maxAmount(maxAmount)
+}
+// Optional parameter
+if let dateFrom = dateFrom {
+// The minimum date of the transaction, in UNIX format by milliseconds
+    usersService = usersService.dateFrom(dateFrom)
+}
+// Optional parameter
+if let dateTo = dateTo {
+// The maximum date of the transaction, in UNIX format by milliseconds
+    usersService = usersService.dateTo(dateTo)
+}
+// Optional parameter
+if let description = description {
+// The description of the transaction. It can be partial.
+    usersService = usersService.description(description)
+}
 // Optional parameter
 if let isBankAggregation = isBankAggregation {
     usersService = usersService.isBankAggregation(isBankAggregation)
