@@ -2477,6 +2477,18 @@ var consentsService = OpenBankingPFMAPI.consentsClient()
 consentsService.clearQueryItems()
 
 let consentId = "some_consent_id"
+let type = "ACTIVATED" // Values: 'ACTIVATED' | 'PENDING' | 'EXPIRED' | 'CANCELLED' 
+let status = "RECEIVED" 
+
+// Optional parameter
+if let type = type {
+    consentsService = consentsService.type(type)
+}
+
+// Optional parameter
+if let status = status {
+    consentsService = consentsService.status(status)
+}
 
 // Remote call
 consentsService.get(withID: consentId) { (result: Result<OBConsent>) in
