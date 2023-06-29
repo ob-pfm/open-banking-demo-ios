@@ -2869,6 +2869,25 @@ var insightService = OpenBankingPFMAPI.insightsClient()
 insightService.clearQueryItems()
 
 let userId = 123456
+let accountIds: String? = "12, 83"
+let dateFrom: Int? = 1587567125458
+let dateTo: Int? = 1587567125458 
+
+// Optional parameter
+if let accountIds = accountIds {
+// The ID of the account to fetch the resume. If it is not present, the API will use all the accounts of the user.
+    insightService = insightService.accountIds(accountIds)
+}
+// Optional parameter
+if let dateFrom = dateFrom {
+// The date where the resume starts, in UNIX format.
+    insightService = insightService.dateFrom(dateFrom)
+}
+// Optional parameter
+if let dateTo = dateTo {
+// The date where the resume ends, in UNIX format.
+    insightService = insightService.dateTo(dateTo)
+}
 
 // Remote call
 insightService.userId(userId).getResume { (result: Result<OBSummaryResponse<OBResumeBalance>>) in
