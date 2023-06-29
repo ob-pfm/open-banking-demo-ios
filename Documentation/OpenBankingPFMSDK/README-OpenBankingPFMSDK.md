@@ -2478,7 +2478,7 @@ consentsService.clearQueryItems()
 
 let consentId = "some_consent_id"
 let type = "ACTIVATED" // Values: 'ACTIVATED' | 'PENDING' | 'EXPIRED' | 'CANCELLED' 
-let status = "RECEIVED" 
+let status = "RECEIVED" // Values: 'RECEIVED' | 'TRANSMITTED'
 
 // Optional parameter
 if let type = type {
@@ -2751,6 +2751,12 @@ creditsService.clearQueryItems()
 
 let userId = 123456
 creditsService = creditsService.userId(userId)
+
+// Optional parameter
+if let cursor = cursor {
+// The ID of the account where the list starts.
+    creditsService = creditsService.cursor(cursor)
+}
 
 // Remote call
 creditsService.getList { (result: Result<OBCreditResponse<[OBCredit]>>) in
