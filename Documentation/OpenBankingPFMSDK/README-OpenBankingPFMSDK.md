@@ -144,60 +144,6 @@ var usersService = OpenBankingPFMAPI.usersClient()
 // In order to prevent bad requests
 usersService.clearQueryItems()
 
-// FILTER PARAMETERS
-// Optional parameter
-if let page = page {
-// To ask for a specific page
-    usersService = usersService.page(page)
-}
-// Optional parameter
-if let size = size {
-// To indicate the number of items to show by page
-    usersService = usersService.size(size)
-}
-// Optional parameter
-if let field = field {
-    usersService = usersService.field(field)
-}
-// Optional parameter
-if let order = order {
-    usersService = usersService.order(order)
-}
-// Optional parameter
-if let categoryId = categoryId {
-// To ask for a specific category to filter
-    usersService = usersService.categoryId(categoryId)
-}
-// Optional parameter
-if let charge = charge {
-// To filter by type of transaction(true = charge, false = deposit, nil = both)
-    usersService = usersService.charge(charge)
-}
-// Optional parameter
-if let minAmount = minAmount {
-// The minimum amount of the transaction.
-    usersService = usersService.minAmount(minAmount)
-}
-// Optional parameter
-if let maxAmount = maxAmount {
-// The maximum amount of the transaction.
-    usersService = usersService.maxAmount(maxAmount)
-}
-// Optional parameter
-if let dateFrom = dateFrom {
-// The minimum date of the transaction, in UNIX format by milliseconds
-    usersService = usersService.dateFrom(dateFrom)
-}
-// Optional parameter
-if let dateTo = dateTo {
-// The maximum date of the transaction, in UNIX format by milliseconds
-    usersService = usersService.dateTo(dateTo)
-}
-// Optional parameter
-if let description = description {
-// The description of the transaction. It can be partial.
-    usersService = usersService.description(description)
-}
 // Optional parameter
 if let isBankAggregation = isBankAggregation {
     usersService = usersService.isBankAggregation(isBankAggregation)
@@ -377,12 +323,15 @@ var categoriesService = OpenBankingPFMAPI.categoriesClient()
 categoryService.clearQueryItems()
 
 let userId = 123456
-let cursor = nil
+let isUserCategory:Bool? = true
 
 // Optional parameter
 categoriesService = categoriesService.userId(userId)
 // Optional parameter
-categoriesService = categoriesService.cursor(cursor)
+if let isUserCategory = isUserCategory {
+// In order to filter the categories (true = users categories, false = default categories, nil = both)
+    categoriesService = categoriesService.isUserCategory(isUserCategory)
+}
 
 // Remote call
 categoriesService.getList { (result: Result<OBBodyResponse<[OBCategory]>>) in
@@ -1256,11 +1205,69 @@ Fetches a list of transactions per account. You can pass a filter options object
 var transactionsService = OpenBankingPFMAPI.transactionsClient()
 // In order to prevent bad requests
 transactionsService.clearQueryItems()
-
 let accountId = 123456
 
+// FILTER PARAMETERS
+// Optional parameter
+if let page = page {
+// To ask for a specific page
+    transactionsService = transactionsService.page(page)
+}
+// Optional parameter
+if let size = size {
+// To indicate the number of items to show by page
+    transactionsService = transactionsService.size(size)
+}
+// Optional parameter
+if let field = field {
+    transactionsService = transactionsService.field(field)
+}
+// Optional parameter
+if let order = order {
+    transactionsService = transactionsService.order(order)
+}
+// Optional parameter
+if let categoryId = categoryId {
+// To ask for a specific category to filter
+    transactionsService = transactionsService.categoryId(categoryId)
+}
+// Optional parameter
+if let charge = charge {
+// To filter by type of transaction(true = charge, false = deposit, nil = both)
+    transactionsService = transactionsService.charge(charge)
+}
+// Optional parameter
+if let minAmount = minAmount {
+// The minimum amount of the transaction.
+    transactionsService = transactionsService.minAmount(minAmount)
+}
+// Optional parameter
+if let maxAmount = maxAmount {
+// The maximum amount of the transaction.
+    transactionsService = transactionsService.maxAmount(maxAmount)
+}
+// Optional parameter
+if let dateFrom = dateFrom {
+// The minimum date of the transaction, in UNIX format by milliseconds
+    transactionsService = transactionsService.dateFrom(dateFrom)
+}
+// Optional parameter
+if let dateTo = dateTo {
+// The maximum date of the transaction, in UNIX format by milliseconds
+    transactionsService = transactionsService.dateTo(dateTo)
+}
+// Optional parameter
+if let description = description {
+// The description of the transaction. It can be partial.
+    transactionsService = transactionsService.description(description)
+}
+// Optional parameter
+if let isBankAggregation = isBankAggregation {
+    transactionsService = transactionsService.isBankAggregation(isBankAggregation)
+}
+
 // Remote call
-transactionsService.accountId(accountId).getList { (result:Result<OBBodyResponse<[OBTransaction]>>) in
+transactionsService.accountIds(accountId).getList { (result:Result<OBBodyResponse<[OBTransaction]>>) in
     switch result {
     case .success(let result):
 // Set the parsed transactions into your datasource
